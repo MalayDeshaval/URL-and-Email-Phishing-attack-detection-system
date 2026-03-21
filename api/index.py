@@ -9,7 +9,10 @@ from typing import List
 import models, schemas, auth, database, scanner_service, ai_engine
 
 # Initialize Database
-models.Base.metadata.create_all(bind=database.engine)
+try:
+    models.Base.metadata.create_all(bind=database.engine)
+except Exception as e:
+    print(f"DATABASE INITIALIZATION ERROR: {e}")
 
 app = FastAPI(
     title="AI-Powered Phishing Detection API",
@@ -24,6 +27,11 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+@app.exception_handler(Exception)
+async def global_exception_handler(request, exc):
+    import traceback
+    return Body(content={"error": str(exc), "traceback": traceback.format_exc()}, status_code=500)
 
 @app.get("/ping")
 @app.get("/api/ping")
