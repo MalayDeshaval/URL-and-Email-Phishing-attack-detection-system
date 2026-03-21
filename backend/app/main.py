@@ -31,6 +31,7 @@ async def ping():
     return {"status": "online"}
 
 @app.post("/register", response_model=schemas.User)
+@app.post("/api/register", response_model=schemas.User)
 def register_user(user: schemas.UserCreate, db: Session = Depends(database.get_db)):
     try:
         # Check username
@@ -56,6 +57,7 @@ def register_user(user: schemas.UserCreate, db: Session = Depends(database.get_d
         raise HTTPException(status_code=500, detail="Internal server error")
 
 @app.post("/token", response_model=schemas.Token)
+@app.post("/api/token", response_model=schemas.Token)
 async def login_for_access_token(form_data: OAuth2PasswordRequestForm = Depends(), db: Session = Depends(database.get_db)):
     user = db.query(models.User).filter(models.User.username == form_data.username).first()
     if not user or not auth.verify_password(form_data.password, user.hashed_password):
