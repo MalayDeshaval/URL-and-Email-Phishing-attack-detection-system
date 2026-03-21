@@ -10,7 +10,10 @@ import models, schemas, auth, database, scanner_service, ai_engine
 # Initialize Database
 models.Base.metadata.create_all(bind=database.engine)
 
-app = FastAPI(title="AI-Powered Phishing Detection API")
+app = FastAPI(
+    title="AI-Powered Phishing Detection API",
+    root_path="/api" if os.environ.get("VERCEL") else ""
+)
 
 # CORS setup
 app.add_middleware(
