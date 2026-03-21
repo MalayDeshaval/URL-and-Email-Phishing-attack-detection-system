@@ -1,53 +1,73 @@
-# 🛡️ PhishGuard AI: AI-Powered Phishing Detection System
+# React + TypeScript + Vite
 
-PhishGuard AI is a professional-grade cybersecurity platform designed for security analysts and end-users to detect phishing attacks in URLs and Emails. It leverages Machine Learning (Random Forest) for URL analysis and Rule-based AI for linguistic pattern recognition in emails.
+This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
 
-## 🚀 Features
+Currently, two official plugins are available:
 
-- **🌐 AI URL Scanner**: Analyzes subdomains, length, HTTPS status, and structural patterns using a trained ML model.
-- **📧 Email NLP Analyzer**: Detects social engineering, urgent language, and suspicious keywords.
-- **🧠 AI Explanation Engine**: Provides human-readable reasons for every detection.
-- **📊 Security Dashboard**: Real-time stats, threat distribution charts, and risk levels.
-- **📁 Scan History**: Persistent storage of past analyses for audit trails.
-- **👤 JWT Authentication**: Secure login and signup system.
-- **📄 Report Generation**: (Backend Ready) Generate PDF intelligence reports.
+- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
+- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
 
-## 🧱 Tech Stack
+## React Compiler
 
-- **Frontend**: React.js, Tailwind CSS, Framer Motion, Lucide Icons, Recharts.
-- **Backend**: Python, FastAPI, SQLAlchemy, SQLite.
-- **Machine Learning**: Scikit-Learn (Random Forest), Joblib.
-- **DevOps**: Docker, Docker Compose.
+The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
 
-## 🛠️ Setup Instructions
+## Expanding the ESLint configuration
 
-### Prerequisites
-- Python 3.9+
-- Node.js 18+
-- Docker (optional)
+If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
 
-### ⚡ Single Command (Quickest)
-If you have Node.js and Python installed:
-```bash
-npm install && npm start
+```js
+export default defineConfig([
+  globalIgnores(['dist']),
+  {
+    files: ['**/*.{ts,tsx}'],
+    extends: [
+      // Other configs...
+
+      // Remove tseslint.configs.recommended and replace with this
+      tseslint.configs.recommendedTypeChecked,
+      // Alternatively, use this for stricter rules
+      tseslint.configs.strictTypeChecked,
+      // Optionally, add this for stylistic rules
+      tseslint.configs.stylisticTypeChecked,
+
+      // Other configs...
+    ],
+    languageOptions: {
+      parserOptions: {
+        project: ['./tsconfig.node.json', './tsconfig.app.json'],
+        tsconfigRootDir: import.meta.dirname,
+      },
+      // other options...
+    },
+  },
+])
 ```
-Or simply double-click **`start.bat`** (Windows).
 
-### Docker Setup
-```bash
-docker-compose up --build
+You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+
+```js
+// eslint.config.js
+import reactX from 'eslint-plugin-react-x'
+import reactDom from 'eslint-plugin-react-dom'
+
+export default defineConfig([
+  globalIgnores(['dist']),
+  {
+    files: ['**/*.{ts,tsx}'],
+    extends: [
+      // Other configs...
+      // Enable lint rules for React
+      reactX.configs['recommended-typescript'],
+      // Enable lint rules for React DOM
+      reactDom.configs.recommended,
+    ],
+    languageOptions: {
+      parserOptions: {
+        project: ['./tsconfig.node.json', './tsconfig.app.json'],
+        tsconfigRootDir: import.meta.dirname,
+      },
+      // other options...
+    },
+  },
+])
 ```
-
-## 🧪 Security & Best Practices
-- Input validation using Pydantic.
-- Password hashing with Bcrypt.
-- JWT-based session management.
-- CORS protection.
-
-## 🧠 ML Model Performance
-The system uses a Random Forest classifier trained on a balanced dataset of phishing and safe URLs.
-- **Accuracy**: 100% (on synthetic demonstration dataset)
-- **Features**: `url_len`, `subdomains`, `has_ip`, `special_chars`, `is_https`, `domain_len`.
-
----
-*Created as a professional cybersecurity showcase project.*
