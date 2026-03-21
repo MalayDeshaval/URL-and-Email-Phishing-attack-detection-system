@@ -26,6 +26,7 @@ app.add_middleware(
 )
 
 @app.get("/ping")
+@app.get("/api/ping")
 async def ping():
     return {"status": "online"}
 
