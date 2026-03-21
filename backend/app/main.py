@@ -2,6 +2,7 @@ from fastapi import FastAPI, Depends, HTTPException, status, Body
 from fastapi.middleware.cors import CORSMiddleware
 from sqlalchemy.orm import Session
 from fastapi.security import OAuth2PasswordRequestForm
+import os
 from datetime import timedelta
 from typing import List
 
