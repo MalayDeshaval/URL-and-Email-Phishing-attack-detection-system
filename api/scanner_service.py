@@ -1,32 +1,46 @@
 import re
-import joblib
-import pandas as pd
 import os
-from ml_trainer import extract_features
 
 class ScannerService:
     def __init__(self):
-        model_path = os.path.join(os.path.dirname(__file__), 'models', 'phishing_model.pkl')
-        if os.path.exists(model_path):
-            self.model = joblib.load(model_path)
-        else:
+        self.model = None
+
+    def _load_model(self):
+        if self.model is not None:
+            return
+        
+        try:
+            import joblib
+            model_path = os.path.join(os.path.dirname(__file__), 'models', 'phishing_model.pkl')
+            if os.path.exists(model_path):
+                self.model = joblib.load(model_path)
+        except Exception as e:
+            print(f"MODEL LOAD ERROR: {e}")
             self.model = None
 
     def scan_url(self, url: str, deep_scan: bool = True):
+        self._load_model()
         if not self.model or not deep_scan:
             # Simple pattern matching if deep scan is off
             is_suspicious = "login" in url.lower() or "bank" in url.lower() or "verify" in url.lower()
             return ("suspicious" if is_suspicious else "safe"), (70.0 if is_suspicious else 60.0)
         
-        features = extract_features(url)
-        # Convert to DataFrame for prediction
-        features_df = pd.DataFrame([features], columns=['len', 'dots', 'is_ip', 'special', 'https', 'domain_len'])
-        
-        prediction = self.model.predict(features_df)[0]
-        prob = self.model.predict_proba(features_df)[0]
-        confidence = float(max(prob) * 100)
-        
-        result = "phishing" if prediction == 1 else "safe"
+        try:
+            import pandas as pd
+            from ml_trainer import extract_features
+            features = extract_features(url)
+            # Convert to DataFrame for prediction
+            features_df = pd.DataFrame([features], columns=['len', 'dots', 'is_ip', 'special', 'https', 'domain_len'])
+            
+            prediction = self.model.predict(features_df)[0]
+            prob = self.model.predict_proba(features_df)[0]
+            confidence = float(max(prob) * 100)
+            
+            result = "phishing" if prediction == 1 else "safe"
+        except Exception as e:
+            print(f"AI PREDICTION ERROR: {e}")
+            result = "suspicious"
+            confidence = 70.0
         
         # Rule-based adjustments
         if "login" in url.lower() or "verify" in url.lower() or "secure" in url.lower():
