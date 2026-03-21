@@ -1,4 +1,33 @@
+from fastapi import FastAPI, Depends, HTTPException, status, Body
+from fastapi.middleware.cors import CORSMiddleware
+from sqlalchemy.orm import Session
+from fastapi.security import OAuth2PasswordRequestForm
+import os
+from datetime import timedelta
+from typing import List
 from fastapi.responses import JSONResponse
+
+import models, schemas, auth, database, scanner_service, ai_engine
+
+# Initialize Database
+try:
+    models.Base.metadata.create_all(bind=database.engine)
+except Exception as e:
+    print(f"DATABASE INITIALIZATION ERROR: {e}")
+
+app = FastAPI(
+    title="AI-Powered Phishing Detection API",
+    root_path="/api" if os.environ.get("VERCEL") else ""
+)
+
+# CORS setup
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=False,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 @app.exception_handler(Exception)
 async def global_exception_handler(request, exc):
