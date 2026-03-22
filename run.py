@@ -15,7 +15,7 @@ def start_services():
     
     # 2. Start Frontend
     print("[2/2] Launching Frontend (Vite)...")
-    frontend_dir = os.path.join(root_dir, "frontend")
+    frontend_dir = root_dir
     # shell=True is needed for npm on Windows
     frontend_proc = subprocess.Popen(["npm", "run", "dev"], cwd=frontend_dir, shell=True)
     
