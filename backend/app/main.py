@@ -25,6 +25,15 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+@app.get("/")
+@app.get("/api")
+async def root():
+    return {
+        "message": "Welcome to the AI-Powered Phishing Detection API",
+        "docs": "/docs",
+        "status": "online"
+    }
+
 @app.get("/ping")
 @app.get("/api/ping")
 async def ping():
