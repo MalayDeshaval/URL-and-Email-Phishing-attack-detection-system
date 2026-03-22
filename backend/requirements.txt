@@ -17,3 +17,5 @@ openai
 python-dotenv
 pytest
 httpx
+email-validator
+pydantic[email]
