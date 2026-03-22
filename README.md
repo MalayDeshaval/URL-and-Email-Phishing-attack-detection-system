@@ -94,5 +94,7 @@ Contributions are welcome! Please feel free to submit a Pull Request.
 
 This project is licensed under the MIT License.
 
+Link of Project: https://url-and-email-phishing-attack-detection-system.vercel.app/
+
 ---
 Developed with ❤️ by [Malay Deshaval](https://github.com/MalayDeshaval)
