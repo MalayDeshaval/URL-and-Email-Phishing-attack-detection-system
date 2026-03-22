@@ -43,13 +43,15 @@ A sophisticated cybersecurity platform designed to detect and analyze phishing a
 ### Local Development
 
 #### 1. Backend Setup
-```bash
-cd backend/app
-python -m venv venv
-source venv/bin/activate  # On Windows: venv\Scripts\activate
-pip install -r requirements.txt
-python main.py
-```
+- **Local**:
+  ```bash
+  cd backend/app
+  python -m venv venv
+  source venv/bin/activate  # On Windows: venv\Scripts\activate
+  pip install -r requirements.txt
+  python main.py
+  ```
+- **Live API (Railway)**: [https://url-and-email-phishing-attack-detection-system-production.up.railway.app](https://url-and-email-phishing-attack-detection-system-production.up.railway.app)
 *Backend will run on `http://localhost:8001`*
 
 #### 2. Frontend Setup
